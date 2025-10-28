@@ -1,13 +1,14 @@
 import { useTodoDelete, useTodoList } from "@/store/todo";
 import { Button } from "../ui/button";
-import { useTodosDate } from "@/hooks/queries";
+import { useTodosDate } from "@/hooks/queries/use-todos-data";
+import { Link } from "react-router";
 
 function TodoItem({ todo, id }: { todo: string; id: number }) {
   const deleteTodo = useTodoDelete();
 
   return (
     <div className="flex items-center justify-between border-2 p-2">
-      <span>{todo}</span>
+      <Link to={`/todolist/${id}`}>{todo}</Link>
       <Button variant={"destructive"} onClick={() => deleteTodo(id)}>
         삭제
       </Button>
