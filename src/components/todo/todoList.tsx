@@ -1,5 +1,6 @@
 import { useTodoDelete, useTodoList } from "@/store/todo";
 import { Button } from "../ui/button";
+import { useTodosDate } from "@/hooks/queries";
 
 function TodoItem({ todo, id }: { todo: string; id: number }) {
   const deleteTodo = useTodoDelete();
@@ -15,11 +16,14 @@ function TodoItem({ todo, id }: { todo: string; id: number }) {
 }
 
 export default function TodoList() {
-  const todoListState = useTodoList();
+  const { error, isLoading, data: todos } = useTodosDate();
+
+  if (error) return <div>패치 에러!</div>;
+  if (isLoading) return <div>loading...</div>;
 
   return (
     <div className="flex flex-col gap-1">
-      {todoListState.map(({ content, id }) => (
+      {todos?.map(({ content, id }) => (
         <TodoItem key={id} todo={content} id={id} />
       ))}
     </div>
