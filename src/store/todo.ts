@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-const initialState = { todo: "", todoList: [] };
+const initialState = { todoList: [] };
 
 const useTodoStore = create<TodoStore>()(
   devtools(
@@ -12,12 +12,14 @@ const useTodoStore = create<TodoStore>()(
         actions: {
           addTodo(content) {
             set((state) => {
-              state.todoList.push(content);
+              state.todoList.push({ id: new Date().getTime(), content });
             });
           },
-          deleteTodo(idx) {
+          deleteTodo(targetId) {
             set((state) => {
-              state.todoList.splice(idx, 1);
+              state.todoList = state.todoList.filter(
+                ({ id }) => id !== targetId,
+              );
             });
           },
         },
