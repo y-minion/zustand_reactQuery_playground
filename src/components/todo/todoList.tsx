@@ -1,20 +1,5 @@
-import { useTodoDelete, useTodoList } from "@/store/todo";
-import { Button } from "../ui/button";
 import { useTodosDate } from "@/hooks/queries/use-todos-data";
-import { Link } from "react-router";
-
-function TodoItem({ todo, id }: { todo: string; id: string }) {
-  const deleteTodo = useTodoDelete();
-
-  return (
-    <div className="flex items-center justify-between border-2 p-2">
-      <Link to={`/todolist/${id}`}>{todo}</Link>
-      <Button variant={"destructive"} onClick={() => deleteTodo(id)}>
-        삭제
-      </Button>
-    </div>
-  );
-}
+import TodoItem from "./todo-item";
 
 export default function TodoList() {
   const { error, isLoading, data: todos } = useTodosDate();
@@ -24,8 +9,8 @@ export default function TodoList() {
 
   return (
     <div className="flex flex-col gap-1">
-      {todos?.map(({ content, id }) => (
-        <TodoItem key={id} todo={content} id={id} />
+      {todos?.map((todo) => (
+        <TodoItem key={todo.id} {...todo} />
       ))}
     </div>
   );
