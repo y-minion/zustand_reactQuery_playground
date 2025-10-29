@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { useTodosDate } from "@/hooks/queries/use-todos-data";
 import { Link } from "react-router";
 
-function TodoItem({ todo, id }: { todo: string; id: number }) {
+function TodoItem({ todo, id }: { todo: string; id: string }) {
   const deleteTodo = useTodoDelete();
 
   return (

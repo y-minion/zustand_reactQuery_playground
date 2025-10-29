@@ -12,7 +12,10 @@ const useTodoStore = create<TodoStore>()(
         actions: {
           addTodo(content) {
             set((state) => {
-              state.todoList.push({ id: new Date().getTime(), content });
+              state.todoList.push({
+                id: String(new Date().getTime()),
+                content,
+              });
             });
           },
           deleteTodo(targetId) {

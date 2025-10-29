@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 export default function TodoDetailPage() {
   const { id } = useParams();
-  const { data, error, isLoading } = useTodoDataById(Number(id));
+  const { data, error, isLoading } = useTodoDataById(String(id));
 
   if (error) return <div>패치 에러!</div>;
   if (isLoading) return <div>loading...</div>;
