@@ -1,4 +1,4 @@
-export type Todo = { id: string; content: string };
+export type Todo = { id: string; content: string; isDone: boolean };
 export type TodoList = Todo[];
 export type TodoState = {
   todoList: TodoList;
