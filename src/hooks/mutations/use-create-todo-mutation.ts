@@ -1,4 +1,5 @@
 import { createTodo } from "@/api/create-todo";
+import { QUERY_KEYS } from "@/lib/constants";
 import {
   QueryClient,
   useMutation,
@@ -17,7 +18,7 @@ export function useCreateTodoMutation() {
     },
     onSuccess: () => {
       //   window.location.reload();
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.todo.list });
     },
   });
 }
