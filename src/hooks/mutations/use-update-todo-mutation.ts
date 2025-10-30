@@ -7,9 +7,12 @@ export function useUpdateTodoMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateTodo,
-    onError: () => {},
-    onSuccess: (prevData) => {},
-    onMutate: (updatedTodo) => {
+
+    onMutate: async (updatedTodo) => {
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.todo.list });
+      const prevTodos = queryClient.getQueryData<TodoList>(
+        QUERY_KEYS.todo.list,
+      );
       queryClient.setQueryData<TodoList>(QUERY_KEYS.todo.list, (prevTodos) => {
         if (!prevTodos) return [];
         return prevTodos.map((prevTodo) => {
@@ -19,6 +22,21 @@ export function useUpdateTodoMutation() {
             ...updatedTodo,
           };
         });
+      });
+
+      return { prevTodos };
+    },
+    onError: (error, variable, context) => {
+      if (context && context.prevTodos) {
+        queryClient.setQueryData<TodoList>(
+          QUERY_KEYS.todo.list,
+          context.prevTodos,
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.todo.list,
       });
     },
   });
