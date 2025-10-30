@@ -1,6 +1,6 @@
 import { createTodo } from "@/api/create-todo";
 import { QUERY_KEYS } from "@/lib/constants";
-import type { TodoList } from "@/types";
+import type { Todo, TodoList } from "@/types";
 import {
   QueryClient,
   useMutation,
@@ -18,11 +18,13 @@ export function useCreateTodoMutation() {
       window.alert(error.message);
     },
     onSuccess: (newTodo) => {
-      //   window.location.reload();
-      // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.todo.list });
-      queryClient.setQueryData<TodoList>(QUERY_KEYS.todo.list, (prevTodos) => {
-        if (!prevTodos) return [newTodo];
-        return [...prevTodos, newTodo];
+      queryClient.setQueryData<Todo>(
+        QUERY_KEYS.todo.detail(newTodo.id),
+        newTodo,
+      );
+      queryClient.setQueryData<string[]>(QUERY_KEYS.todo.list, (prevData) => {
+        if (!prevData) return [newTodo.id];
+        return [...prevData, newTodo.id];
       });
     },
   });
